@@ -1,0 +1,24 @@
+POST http://localhost:5002/cats
+Content-Type: application/json
+
+{
+    "name": "Charcoal",
+    "breed": "main-coon",
+    "age": 32
+}
+
+
+###
+
+GET http://localhost:5002/cats
+###
+GET http://localhost:5002/cats/1
+
+### 
+PATCH http://localhost:5002/cats/0
+Content-Type: application/json
+
+{
+    "name": "Ash",
+    "breed": "main-coon",
+}
