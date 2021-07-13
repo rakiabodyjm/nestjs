@@ -5,7 +5,13 @@ import { APP_PIPE } from '@nestjs/core'
 
 @Module({
   controllers: [CatsController],
-  providers: [CatsService],
+  providers: [
+    CatsService,
+    {
+      provide: APP_PIPE,
+      useClass: ValidationPipe,
+    },
+  ],
   exports: [CatsService],
 })
 export class CatsModule {}

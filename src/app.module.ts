@@ -8,6 +8,7 @@ import { AppController } from './app.controller'
 import { AppService } from './app.service'
 import { CatsModule } from './cats/cats.module'
 import { PetsModule } from './pets/pets.module'
+import { OwnersModule } from './owners/owners.module'
 
 @Module({
   imports: [
@@ -22,6 +23,7 @@ import { PetsModule } from './pets/pets.module'
     }),
     CatsModule,
     PetsModule,
+    OwnersModule,
   ],
   controllers: [AppController],
   providers: [AppService],
