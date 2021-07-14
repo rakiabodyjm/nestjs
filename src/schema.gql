@@ -16,18 +16,43 @@ type Owner {
   pets: [Pet!]
 }
 
+type Todo {
+  id: Int!
+  content: String!
+  status: Boolean!
+  userId: Int!
+  user: User!
+}
+
+type User {
+  id: Int!
+  name: String!
+  todos: [Todo!]!
+}
+
 type Query {
   getPet(id: Int!): Pet!
   pets: [Pet!]!
   owners: [Owner!]!
   owner(id: Int!): Owner!
+  users: [User!]!
+  user(id: Int!): User!
+  findIdByName(userName: String!): ID!
+  todos: [Todo!]!
+  todo(id: Int!): Todo!
 }
 
 type Mutation {
   createPet(createPetInput: CreatePetInput!): Pet!
   createOwner(createOwnerInput: CreateOwnerInput!): Owner!
   updateOwner(updateOwnerInput: UpdateOwnerInput!): Owner!
-  removeOwner(id: Int!): Owner!
+  removeOwner(id: Int!): String!
+  createUser(createUserInput: CreateUserInput!): User!
+  updateUser(updateUserInput: UpdateUserInput!): User!
+  removeUser(id: Int!): String!
+  createTodo(createTodoInput: CreateTodoInput!): Todo!
+  updateTodo(updateTodoInput: UpdateTodoInput!): Todo!
+  removeTodo(id: Int!): String!
 }
 
 input CreatePetInput {
@@ -41,7 +66,28 @@ input CreateOwnerInput {
 }
 
 input UpdateOwnerInput {
+  name: String
+  id: Int!
+  pets: [Int!]
+}
+
+input CreateUserInput {
+  name: String!
+}
+
+input UpdateUserInput {
   name: String!
   id: Int!
-  pets: [Int!]!
+}
+
+input CreateTodoInput {
+  content: String!
+  userId: Int!
+}
+
+input UpdateTodoInput {
+  content: String
+  userId: Int
+  id: Int!
+  status: Boolean!
 }

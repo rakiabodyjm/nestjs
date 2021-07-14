@@ -1,7 +1,8 @@
-import { Injectable } from '@nestjs/common'
+import { forwardRef, Inject, Injectable } from '@nestjs/common'
 import { InjectRepository } from '@nestjs/typeorm'
 
 import { Owner } from 'src/owners/entities/owner.entity'
+import { PetsService } from 'src/pets/pets.service'
 import { Repository, getConnection } from 'typeorm'
 import { CreateOwnerInput } from './dto/create-owner.input'
 import { UpdateOwnerInput } from './dto/update-owner.input'
@@ -10,6 +11,7 @@ import { UpdateOwnerInput } from './dto/update-owner.input'
 export class OwnersService {
   constructor(
     @InjectRepository(Owner) private ownerRepository: Repository<Owner>,
+    @Inject(forwardRef(() => PetsService)) private petsService: PetsService,
   ) {}
 
   create(createOwnerInput: CreateOwnerInput) {
@@ -26,26 +28,28 @@ export class OwnersService {
 
   findOne(id: number) {
     // return `This action returns a #${id} owner`
-    const returnable = this.ownerRepository.findOneOrFail(id)
+    const returnable = this.ownerRepository.findOneOrFail(id, {
+      relations: ['pets'],
+    })
     return returnable
   }
 
   async update(id: number, updateOwnerInput: UpdateOwnerInput) {
-    // return `This action updates a #${id} owner`
-    // const toBeUpdated = await this.ownerRepository.findOneOrFail()
-    // Object.entries(updateOwnerInput).forEach(
-    //   ([key, value]) => (toBeUpdated[key] = value),
-    // )
-
-    await getConnection()
-      .createQueryBuilder()
-      .update(Owner)
-      .set(updateOwnerInput)
-      .where('id = :id', { id })
-      .execute()
+    await this.ownerRepository.save({
+      ...updateOwnerInput,
+      id,
+    })
+    const returner = await this.ownerRepository.findOneOrFail(id, {
+      relations: ['pets'],
+    })
+    return returner
   }
 
   remove(id: number) {
-    return `This action removes a #${id} owner`
+    this.petsService.removeAllByOwnerId(id)
+
+    const success = this.ownerRepository.delete(id)
+    return `Successfully removed ${id}`
+    // return `this removes ${id} owner`
   }
 }

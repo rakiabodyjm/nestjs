@@ -19,10 +19,7 @@ export class Owner {
   @Field()
   name: string
 
-  @OneToMany(() => Pet, (pet) => pet.owner, {
-    cascade: true,
-  })
-  @JoinTable()
+  @OneToMany(() => Pet, (pet) => pet.owner)
   @Field((type) => [Pet], { nullable: true })
   pets?: Pet[]
 }
