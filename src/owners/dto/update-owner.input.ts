@@ -8,9 +8,9 @@ export class UpdateOwnerInput extends PartialType(CreateOwnerInput) {
   @Field(() => Int)
   id?: number
 
-  @Field()
+  @Field({ nullable: true })
   name?: string
 
-  @Field(() => [Int])
+  @Field(() => [Int], { nullable: true })
   pets?: Pet[]
 }

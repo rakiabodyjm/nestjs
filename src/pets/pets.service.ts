@@ -28,4 +28,17 @@ export class PetsService {
   getOwner(ownerId: number): Promise<Owner> {
     return this.ownersService.findOne(ownerId)
   }
+  async removeAllByOwnerId(ownerId: number): Promise<Pet[]> {
+    const toDeletePets = await this.petsRepository
+      .find({
+        ownerId,
+      })
+      .then((res) => {
+        return res.map((ea) => ea)
+      })
+    const removals = this.petsRepository.remove(toDeletePets)
+    return removals
+
+    // this.petsRepository.remove(toDeletePets.map((ea) => ea.id))
+  }
 }

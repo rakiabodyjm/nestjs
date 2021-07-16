@@ -65,13 +65,13 @@ export class CatsController {
     return this.catsService.remove(+id)
   }
 
-  @Get('pussies')
+  @Get('cats')
   getPussies(@Req() req: Request, @Res() response: Response): Cat[] {
     response.status(200).send(this.catsService.getPussies())
     return this.catsService.getPussies()
   }
 
-  @Get('pussies-express')
+  @Get('cats-express')
   @HttpCode(200)
   @Header('Hello-World', 'hi')
   getPussiesWithExpress(
@@ -82,14 +82,14 @@ export class CatsController {
     console.log(query)
     response.status(200).send(this.catsService.getPussies())
   }
-  @Post('pussy')
+  @Post('cat')
   addPussyWithExpress(@Res() res: Response) {
     res.status(HttpStatus.CREATED).send({
-      success: 'Added new pussy',
+      success: 'Added new cat',
     })
   }
 
-  @Get('pussies-hybrid')
+  @Get('cats-hybrid')
   @Header('Content-Type', 'text/html')
   getPussiesWithExpressAndNest(@Res({ passthrough: true }) res: Response) {
     return `<h3 style="font-family: sans-serif;">Hello World</h3>`
