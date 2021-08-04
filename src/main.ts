@@ -1,11 +1,11 @@
-import { config as dotEnvConfig } from 'dotenv'
+import { config } from 'dotenv'
+config()
 
 import { NestFactory } from '@nestjs/core'
 import { AppModule } from './app.module'
-import { cpus } from 'os'
-import * as cluster from 'cluster'
-import * as processes from 'process'
-dotEnvConfig()
+// import { ValidationPipe } from '@nestjs/common'
+
+declare const module: any
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule)
@@ -16,19 +16,11 @@ async function bootstrap() {
   // app.useGlobalPipes(new ValidationPipe())
   // app.use(helmet())
   app.setGlobalPrefix('api')
+  await app.listen(process.env.PORT || 6000)
 
-  const numCPUS = cpus().length
-
-  if (cluster.isMaster) {
-    console.log(`Primary ${process.pid} is running`)
-    console.log(numCPUS)
+  if (module.hot) {
+    module.hot.accept()
+    module.hot.dispose(() => app.close())
   }
-
-  await app.listen(process.env?.PORT || 6000)
-
-  // if (module.hot) {
-  //   module.hot.accept()
-  //   module.hot.dispose(() => app.close())
-  // }
 }
 bootstrap()

@@ -50,24 +50,6 @@ export class CatsController {
     return this.catsService.findAll()
   }
 
-  @Get('cats-express')
-  @HttpCode(200)
-  @Header('Hello-World', 'hi')
-  getPussiesWithExpress(
-    @Req() req: Request,
-    @Res() response: Response,
-    @Query() query,
-  ) {
-    console.log(query)
-    response.status(200).send(this.catsService.getPussies())
-  }
-
-  @Get('cats-hybrid')
-  @Header('Content-Type', 'text/html')
-  getPussiesWithExpressAndNest(@Res({ passthrough: true }) res: Response) {
-    return `<h3 style="font-family: sans-serif;">Hello World</h3>`
-  }
-
   @Get(':id')
   findOne(@Param('id') id: string) {
     return this.catsService.findOne(id)
@@ -89,10 +71,27 @@ export class CatsController {
     return this.catsService.getPussies()
   }
 
+  @Get('cats-express')
+  @HttpCode(200)
+  @Header('Hello-World', 'hi')
+  getPussiesWithExpress(
+    @Req() req: Request,
+    @Res() response: Response,
+    @Query() query,
+  ) {
+    console.log(query)
+    response.status(200).send(this.catsService.getPussies())
+  }
   @Post('cat')
   addPussyWithExpress(@Res() res: Response) {
     res.status(HttpStatus.CREATED).send({
       success: 'Added new cat',
     })
+  }
+
+  @Get('cats-hybrid')
+  @Header('Content-Type', 'text/html')
+  getPussiesWithExpressAndNest(@Res({ passthrough: true }) res: Response) {
+    return `<h3 style="font-family: sans-serif;">Hello World</h3>`
   }
 }
