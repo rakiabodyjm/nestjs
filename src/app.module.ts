@@ -19,6 +19,7 @@ import { join } from 'path'
     GraphQLModule.forRoot({
       autoSchemaFile: join(process.cwd(), 'src/schema.gql'),
       path: '/api/graphql',
+
       // cors: {
       //   origin: ['http://localhost:3000'],
       //   credentials: true,
@@ -34,8 +35,8 @@ import { join } from 'path'
       // synchronize: true,
       type: 'mysql',
       host: 'localhost',
-      username: 'root',
-      password: 'Rakiabodyjm_4690$',
+      username: 'rakiabodyjm',
+      password: 'rakiabodyjm4690',
       database: 'todo',
       entities: [Pet, Owner, User, Todo],
       synchronize: true,
@@ -45,7 +46,7 @@ import { join } from 'path'
      * static serving client and excluding /api* endpoints
      */
     ServeStaticModule.forRoot({
-      rootPath: join(__dirname, '../client'),
+      rootPath: join(__dirname, '../dist-client'),
       exclude: ['/api*'],
     }),
     CatsModule,
